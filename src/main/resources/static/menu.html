@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        :root {
+            --primary-color: #2a9d8f;
+            --secondary-color: #e76f51;
+            --bg-color: #f4f4f4;
+            --glass-blur: blur(15px) saturate(180%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui;
+        }
+
+        body {
+            background: url('data:image/svg+xml,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h100v100H0z" fill="url(%23g)"/><g id="g"><path d="M0 0h50v50H0z" fill="%23f4f4f4"/><path d="M50 0h50v50H50z" fill="%23e0e0e0"/><path d="M0 50h50v50H0z" fill="%23e0e0e0"/><path d="M50 50h50v50H50z" fill="%23f4f4f4"/></g></svg>');
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 导航栏样式 */
+        .navbar {
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: var(--glass-blur);
+            padding: 1.5rem 5%;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-title {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* 主容器布局 */
+        .main-container {
+            flex: 1;
+            padding: 2rem 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* 功能卡片通用样式 */
+        .feature-card {
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: var(--glass-blur);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            transition: color 0.3s;
+        }
+
+        .card-title {
+            color: #2d3436;
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .card-description {
+            color: #636e72;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 1.2rem;
+        }
+
+        /* 浮动按钮样式 */
+        .float-btn {
+            position: fixed;
+            right: 3rem;
+            bottom: 3rem;
+            background: var(--secondary-color);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(231,111,81,0.4);
+            transition: all 0.3s;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .float-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* 地图容器样式 */
+        .map-container {
+            grid-column: span 2;
+            height: 400px;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            background: none !important; /* 移除默认背景 */
+        }
+        .map-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .map-container:hover img {
+            transform: scale(1.02);
+        }
+
+        .map-overlay {
+            position: absolute;
+            bottom: 15px;
+            left: 20px;
+            background: rgba(255,255,255,0.9);
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .map-placeholder {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, #2a9d8f33, #e76f5133);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            .float-btn {
+                right: 1.5rem;
+                bottom: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar">
+    <h1 class="nav-title">🌾 稻智云——智能视觉驱动的水稻管理系统</h1>
+</nav>
+
+<main class="main-container">
+    <!-- 地理信息底图 -->
+    <div class="map-container feature-card">
+        <!-- 本地地图图片 -->
+        <img src="map.png" alt="川渝水稻田块智能视觉地图">
+
+        <!-- 地图覆盖层 -->
+        <div class="map-overlay">
+            <h3>智能视觉监测区域</h3>
+            <p>（双击查看田块详情）</p>
+        </div>
+    </div>
+
+    <!-- 水稻田块档案管理 -->
+    <div class="feature-card" onclick="navigateTo('/field-management')">
+        <i class="card-icon">📂</i>
+        <h2 class="card-title">田块档案管理</h2>
+        <p class="card-description">管理川渝地区水稻田块基础信息、土壤数据及种植历史</p>
+    </div>
+
+    <!-- 水稻生长监测 -->
+    <div class="feature-card" onclick="navigateTo('/growth-monitoring')">
+        <i class="card-icon">📈</i>
+        <h2 class="card-title">生长监测系统</h2>
+        <p class="card-description">实时监测水稻生长指标及环境参数，生成生长曲线报告</p>
+    </div>
+
+    <!-- 产量预估模型 -->
+    <div class="feature-card" onclick="navigateTo('/yield-prediction')">
+        <i class="card-icon">🔮</i>
+        <h2 class="card-title">产量预估模型</h2>
+        <p class="card-description">基于AI算法预测水稻产量，提供精准种植建议</p>
+    </div>
+
+    <!-- 农事活动日历 -->
+    <div class="feature-card" onclick="navigateTo('/farm-calendar')">
+        <i class="card-icon">🗓</i>
+        <h2 class="card-title">农事日历</h2>
+        <p class="card-description">智能规划川渝地区水稻种植全周期农事活动</p>
+    </div>
+</main>
+
+<!-- 实时告警按钮 -->
+<button class="float-btn" onclick="showAlertPanel()">
+    <i class="alert-icon">🚨</i>
+</button>
+
+<script>
+    // 页面导航函数
+    function navigateTo(path) {
+        // 实际开发中应替换为前端路由或后端跳转逻辑
+        window.location.href = path;
+    }
+
+    // 实时告警面板
+    function showAlertPanel() {
+        const alertPanel = document.createElement('div');
+        alertPanel.style = `
+                position: fixed;
+                inset: 20px;
+                background: white;
+                border-radius: 15px;
+                padding: 2rem;
+                z-index: 100;
+                backdrop-filter: blur(5px);
+                box-shadow: 0 0 20px rgba(0,0,0,0.1);
+                animation: fadeIn 0.3s;
+            `;
+
+        alertPanel.innerHTML = `
+                <h2>⚠️ 实时告警</h2>
+                <div class="alert-content">
+                    <!-- 实际开发中应通过WebSocket获取实时数据 -->
+        <p>🌡 田块A03温度异常（38.5℃）</p>
+        <p>💧 田块B17缺水预警</p>
+        <p>🐛 田块C05发现稻飞虱虫害</p>
+        </div>
+        <button onclick="this.parentElement.remove()"
+        style="position:absolute;top:1rem;right:1rem;cursor:pointer">
+        ✕
+        </button>
+        `;
+
+            document.body.append(alertPanel);
+        }
+
+        // 模拟实时数据刷新
+        setInterval(() => {
+            // 实际开发中应连接WebSocket服务
+            const mockAlert = document.createElement('div');
+            mockAlert.style = `
+        position: fixed;
+        bottom: 8rem;
+        right: 3.5rem;
+        background: var(--secondary-color);
+        color: white;
+        padding: 0.8rem 1.5rem;
+        border-radius: 25px;
+        animation: slideIn 0.3s;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        `;
+            mockAlert.innerHTML = `🌾 新增3条田块预警！`;
+
+            setTimeout(() => mockAlert.remove(), 3000);
+            document.body.append(mockAlert);
+        }, 15000);
+    </script>
+</body>
+</html>
